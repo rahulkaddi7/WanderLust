@@ -21,7 +21,7 @@ const MongoURL = "mongodb://127.0.0.1:27017/wanderlust";
 // const dbUrl = process.env.ATLASDB_URL;
 
 app.get("/" ,(req,res)=>{
-    res.send("Home Page");
+    res.redirect("/listings");
 });
 
 const store =  MongoStore.create({
