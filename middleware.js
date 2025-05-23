@@ -19,8 +19,12 @@ module.exports.saveRediectUrl = (req,res,next)=>{
 module.exports.isOwner = async (req,res,next)=>{
     let {id} = req.params; 
     let listing = await Listing.findById(id);
-    if(!listing.owner.equals(res.locals.currentUser._id)){
-        req.flash("error","You dont have the permission to edit");
+    const user = res.locals.currentUser;
+    const isOwner = listing.owner.equals(user._id);
+    const isAdmin = user.role === 'admin';
+
+    if (!isOwner && !isAdmin) {
+        req.flash("error", "You don't have permission to edit this listing.");
         return res.redirect(`/listings/${id}`);
     }
     next();
