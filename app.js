@@ -17,19 +17,19 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-const MongoURL = "mongodb://127.0.0.1:27017/wanderlust";
-// const dbUrl = process.env.ATLASDB_URL;
+// const MongoURL = "mongodb://127.0.0.1:27017/wanderlust";
+const dbUrl = process.env.ATLAS_URI;
 
 app.get("/" ,(req,res)=>{
     res.redirect("/listings");
 });
 
 const store =  MongoStore.create({
-    mongoUrl : MongoURL,
+    mongoUrl : dbUrl,
     crypto : {
         secret: "secret"
     },   
-    touchAfter: 24*3600.
+    touchAfter: 24*3600,
 });
 
 
@@ -82,7 +82,7 @@ main()
     .catch((err)=> console.log(err));
 
 async function main(){
-    await mongoose.connect(MongoURL);
+    await mongoose.connect(dbUrl);
 }
 
 app.set("view engine", "ejs");
